@@ -159,6 +159,15 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command aim(Supplier<Translation3d> point, double targetSize) {
+    // if (point.get().getZ() == 0.0) {
+    //   Translation2d newPoint = point.get().toTranslation2d().minus(swerveDrive.getPose().getTranslation()).rotateBy(Rotation2d.fromDegrees(20.0)).plus(swerveDrive.getPose().getTranslation());
+    //   point = () -> new Translation3d(
+    //     newPoint.getX(),
+    //     newPoint.getY(),
+    //     0.0
+    //   );
+    // }
+
     // Calculate point to aim towards, accounting for current velocity
     return shooterPivot.setTargetAngleCommand(() -> 
       ShooterMath.calcPivotAngle(

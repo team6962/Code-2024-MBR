@@ -80,13 +80,12 @@ public class AprilTags extends SubsystemBase {
       // if (RobotState.isAutonomous() && poseEstimate.tagCount <= 1) {
       //   continue;
       // }
-      
 
       poses.add(pose2d);
       translationError += 0.5;
       Logger.log("visionPose", pose2d);
       
-      if (translationError < (double) bestPoseEstimate.get("translationError") || rotationError < Units.degreesToRadians(360.0) || poseEstimate.tagCount > (double) bestPoseEstimate.get("tagCount")) {
+      if (translationError < (double) bestPoseEstimate.get("translationError") || rotationError < Units.degreesToRadians(360.0) || poseEstimate.tagCount > (int) bestPoseEstimate.get("tagCount")) {
         bestPoseEstimate.put("pose", pose2d);
         bestPoseEstimate.put("timestamp", poseEstimate.timestampSeconds);
         bestPoseEstimate.put("translationError", translationError);
