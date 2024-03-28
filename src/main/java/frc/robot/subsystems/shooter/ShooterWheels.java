@@ -43,6 +43,7 @@ public class ShooterWheels extends SubsystemBase {
   
   public enum State {
     SPIN_UP,
+    REVERSE,
     OFF,
   }
 
@@ -111,14 +112,18 @@ public class ShooterWheels extends SubsystemBase {
 
     // System.out.println(speed);
     // System.out.println(ShooterMath.calcProjectileVelocity(ShooterMath.calcShooterWheelVelocity(speed)));
-    
+    double motorSpeed;
     switch(state) {
       case SPIN_UP:
         // System.out.println(speed);
-        double motorSpeed = (speed / SHOOTER_WHEELS.MAX_WHEEL_SPEED);
+        motorSpeed = (speed / SHOOTER_WHEELS.MAX_WHEEL_SPEED);
         shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153);
         feedMotor.set(motorSpeed * 2.0 / 1.125);
         break;
+      case REVERSE:
+        motorSpeed = - 0.5 * SHOOTER_WHEELS.MAX_WHEEL_SPEED;
+        shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153);
+        feedMotor.set(motorSpeed * 2.0 / 1.125);
       case OFF:
         shooterMotor.set(0.0);
         feedMotor.set(0.0);

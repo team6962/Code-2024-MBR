@@ -20,6 +20,7 @@ import frc.robot.Constants.Constants;
 import frc.robot.Constants.Constants.ENABLED_SYSTEMS;
 import frc.robot.Constants.Constants.SHOOTER_PIVOT;
 import frc.robot.Constants.Field;
+import frc.robot.Constants.Preferences;
 import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.util.software.Logging.Logger;
 
@@ -41,6 +42,7 @@ public class Shooter extends SubsystemBase {
     AIM_SPEAKER,
     AIM_MORTAR,
     SPIN_UP,
+    REVERSE
   }
 
   public Shooter(SwerveDrive swerveDrive) {
@@ -150,6 +152,8 @@ public class Shooter extends SubsystemBase {
             )
           )
       );
+      case REVERSE:
+        return shooterPivot.setTargetAngleCommand(() -> Preferences.SHOOTER_PIVOT.MIN_ANGLE).andThen(shooterWheels.setState(ShooterWheels.State.REVERSE));
     } 
     return null;
   }

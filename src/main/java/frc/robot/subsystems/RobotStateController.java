@@ -53,6 +53,7 @@ public class RobotStateController extends SubsystemBase {
     PREPARE_TRAP,
     SHOOT_TRAP,
     CENTER_NOTE,
+    REVERSE_SHOOTER,
   }
 
   public RobotStateController(Amp amp, SwerveDrive swerveDrive, Shooter shooter, Transfer transfer, Intake intake) {
@@ -140,6 +141,8 @@ public class RobotStateController extends SubsystemBase {
         ).raceWith(LEDs.setStateCommand(LEDs.State.RUNNING_COMMAND));
       case SPIN_UP:
         return shooter.setState(Shooter.State.SPIN_UP);
+      case REVERSE_SHOOTER:
+        return shooter.setState(Shooter.State.REVERSE);
       default:
         return Commands.run(() -> {});
     }

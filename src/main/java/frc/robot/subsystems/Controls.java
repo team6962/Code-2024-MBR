@@ -91,7 +91,7 @@ public class Controls {
     operator.povUp().whileTrue(hang.setState(Hang.State.EXTEND));
     operator.povDown().whileTrue(hang.setState(Hang.State.RETRACT));
     operator.povLeft().whileTrue(stateController.setState(RobotStateController.State.INTAKE_OUT));
-    operator.povRight();
+    operator.povRight().whileTrue(stateController.setState(RobotStateController.State.REVERSE_SHOOTER));
     operator.leftTrigger().toggleOnTrue(stateController.setState(RobotStateController.State.SPIN_UP));
     operator.rightTrigger().whileTrue(stateController.setState(RobotStateController.State.SHOOT));
 
