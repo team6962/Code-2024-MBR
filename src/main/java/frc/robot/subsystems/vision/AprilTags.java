@@ -85,8 +85,8 @@ public class AprilTags extends SubsystemBase {
       poses.add(pose2d);
       translationError += 0.5;
       Logger.log("visionPose", pose2d);
-
-      if (translationError < (double) bestPoseEstimate.get("translationError") || rotationError < Units.degreesToRadians(360.0)) {
+      
+      if (translationError < (double) bestPoseEstimate.get("translationError") || rotationError < Units.degreesToRadians(360.0) || poseEstimate.tagCount > (double) bestPoseEstimate.get("tagCount")) {
         bestPoseEstimate.put("pose", pose2d);
         bestPoseEstimate.put("timestamp", poseEstimate.timestampSeconds);
         bestPoseEstimate.put("translationError", translationError);
