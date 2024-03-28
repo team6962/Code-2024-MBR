@@ -167,7 +167,7 @@ public final class Constants {
         public static final double kD = 0.0;
       }
 
-      public static final double ACCELERATION_REDUCTION = 1.5;//((SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION * SWERVE_DRIVE.ROBOT_MASS + ((SWERVE_DRIVE.PHYSICS.ROTATIONAL_INERTIA * SWERVE_DRIVE.PHYSICS.MAX_ANGULAR_ACCELERATION) / SWERVE_DRIVE.PHYSICS.DRIVE_RADIUS)) / (9.80 * SWERVE_DRIVE.ROBOT_MASS * SWERVE_DRIVE.FRICTION_COEFFICIENT));
+      public static final double ACCELERATION_REDUCTION = 1.25;//((SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION * SWERVE_DRIVE.ROBOT_MASS + ((SWERVE_DRIVE.PHYSICS.ROTATIONAL_INERTIA * SWERVE_DRIVE.PHYSICS.MAX_ANGULAR_ACCELERATION) / SWERVE_DRIVE.PHYSICS.DRIVE_RADIUS)) / (9.80 * SWERVE_DRIVE.ROBOT_MASS * SWERVE_DRIVE.FRICTION_COEFFICIENT));
 
       public static final PathConstraints DEFAULT_PATH_CONSTRAINTS =
         new PathConstraints(
@@ -339,7 +339,7 @@ public final class Constants {
     public static final Rotation2d HEADING_PRECISION = Rotation2d.fromDegrees(0.25);
     public static final Translation3d POSITION = new Translation3d(Units.inchesToMeters(3.33), 0.0, Units.inchesToMeters(12.1));
     public static final double ABSOLUTE_POSITION_OFFSET = Units.degreesToRotations(-141.5 - 93.15 + 27); //  - [ rawAbsolutePosition from logs ] - 93.15 + [ the angle measured from the front plate of shooter ]
-    public static final Rotation2d NOTE_ROTATION_OFFSET = Rotation2d.fromDegrees(-0.75); // Theoretically 3.1480961
+    public static final Rotation2d NOTE_ROTATION_OFFSET = Rotation2d.fromDegrees(-1.0); // Theoretically 3.1480961
     public static final double SHOOTER_LENGTH = Units.inchesToMeters(15.023);
     
     public static final class PROFILE {

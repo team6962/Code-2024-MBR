@@ -121,9 +121,9 @@ public class ShooterWheels extends SubsystemBase {
         feedMotor.set(motorSpeed * 2.0 / 1.125);
         break;
       case REVERSE:
-        motorSpeed = - 0.5 * SHOOTER_WHEELS.MAX_WHEEL_SPEED;
-        shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153);
-        feedMotor.set(motorSpeed * 2.0 / 1.125);
+        shooterMotor.set(-1.0);
+        feedMotor.set(-1.0);
+        break;
       case OFF:
         shooterMotor.set(0.0);
         feedMotor.set(0.0);

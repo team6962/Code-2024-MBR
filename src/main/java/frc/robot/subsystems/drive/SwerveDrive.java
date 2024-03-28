@@ -510,6 +510,10 @@ public class SwerveDrive extends SubsystemBase {
       return;
     }
 
+    if (point.getDistance(getPose().getTranslation()) < 1.0 && RobotState.isAutonomous()) {
+      return;
+    }
+
 
     Translation2d currentPosition = getPose().getTranslation();
     Translation2d futurePosition = getPose().getTranslation().plus(getFieldVelocity().times(time));

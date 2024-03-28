@@ -176,7 +176,7 @@ public class Autonomous extends Command {
       measuredNotePosition = relativeNotePosition.plus(swerveDrive.getPose().getTranslation());
     }
     Translation2d theoreticalNoteCounterpart = measuredNotePosition.nearest(theoreticalNotePositions);
-    if (theoreticalNoteCounterpart.getDistance(queuedNotePosition) < 0.05 && Math.abs(queuedNotePosition.getX() - trueMeasuredNotePosition.getX()) < 1.0) {
+    if (theoreticalNoteCounterpart.getDistance(queuedNotePosition) < 0.05 && Math.abs(queuedNotePosition.getX() - trueMeasuredNotePosition.getX()) < 1.0 && swerveDrive.getPose().getTranslation().getDistance(trueMeasuredNotePosition) < 4.0) {
       poses.add(new Pose2d(measuredNotePosition, new Rotation2d()));
       visibleNotes.setPoses(poses);
       return measuredNotePosition;
@@ -426,7 +426,7 @@ public class Autonomous extends Command {
     if (state == State.PICKUP && !hasNote() && targetedNote != null) {
       Translation2d visionNotePosition = getVisionNotePosition(targetedNote.nearest(fieldNotePositions));
       boolean firstVisionPosition = targetedNote.nearest(fieldNotePositions).getDistance(targetedNote) < 0.01;
-      if (visionNotePosition != null && (visionNotePosition.getDistance(targetedNote) > Field.NOTE_LENGTH * swerveDrive.getPose().getTranslation().getDistance(visionNotePosition) || firstVisionPosition)) {
+      if (visionNotePosition != null && (visionNotePosition.getDistance(targetedNote) > Field.NOTE_LENGTH * swerveDrive.getPose().getTranslation().getDistance(visionNotePosition))) {
         targetedNote = visionNotePosition;
         if (runningCommand != null) runningCommand.cancel();
         runningCommand = pickup(targetedNote);
