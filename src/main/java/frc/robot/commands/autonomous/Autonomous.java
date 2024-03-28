@@ -356,7 +356,7 @@ public class Autonomous extends Command {
         moveCommand
           .alongWith(
             Commands.sequence(
-              Commands.waitSeconds(0.5).onlyIf(() -> isFirstNote),
+              Commands.waitSeconds(1.0).onlyIf(() -> isFirstNote),
               Commands.waitUntil(() -> inRange(swerveDrive.getPose().getTranslation())),
               Commands.run(() -> {
                 if (controller.canShoot()) simulatedNote = false;

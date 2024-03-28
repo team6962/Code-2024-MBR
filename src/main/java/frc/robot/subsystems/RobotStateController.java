@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.Constants;
 import frc.robot.Constants.Preferences;
 import frc.robot.subsystems.amp.Amp;
@@ -195,7 +194,7 @@ public class RobotStateController extends SubsystemBase {
     // Logger.log("PDH", RobotContainer.getPDH());
     Logger.log("Voltage", RobotController.getBatteryVoltage());
     Logger.log("CAN Bus", RobotController.getCANStatus().percentBusUtilization);
-    Logger.log("Current", RobotContainer.getTotalCurrent());
+    // Logger.log("Current", RobotContainer.getTotalCurrent());
     Logger.log("isAimed", isAimed());
 
     if (RobotState.isDisabled()) {
