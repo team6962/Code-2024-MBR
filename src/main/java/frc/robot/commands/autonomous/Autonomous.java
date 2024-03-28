@@ -11,7 +11,6 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -52,7 +51,7 @@ public class Autonomous extends Command {
   public Translation2d targetedNote;
   public Translation2d visionNoise = new Translation2d();
 
-  public Debouncer hasNoteDebouncer = new Debouncer(0.1, DebounceType.kFalling);
+  public Debouncer hasNoteDebouncer = new Debouncer(0.25, DebounceType.kFalling);
   
   // private static ShuffleboardTab tab = Shuffleboard.getTab("Autonomous Sim");
   // private static SimpleWidget hasNote = tab.add("has Note", true).withWidget(BuiltInWidgets.kToggleButton).withSize(1, 1).withPosition(0, 0);
@@ -120,17 +119,17 @@ public class Autonomous extends Command {
    * Addes all the obstacles to the Pathfinding class
    */
   public void addNoteObstacles() {
-    List<Pair<Translation2d, Translation2d>> dynamicObstacles = new ArrayList<>();
-    for (Integer note : remainingNotes) {
-      if (note >= 3) continue;
-      dynamicObstacles.add(
-        Pair.of(
-          Field.NOTE_POSITIONS.get(note).get().minus(new Translation2d(noteAvoidRadius, noteAvoidRadius)),
-          Field.NOTE_POSITIONS.get(note).get().plus(new Translation2d(noteAvoidRadius, noteAvoidRadius))
-        )
-      );
-    }
-    Pathfinding.setDynamicObstacles(dynamicObstacles, swerveDrive.getPose().getTranslation());
+    // List<Pair<Translation2d, Translation2d>> dynamicObstacles = new ArrayList<>();
+    // for (Integer note : remainingNotes) {
+    //   if (note >= 3) continue;
+    //   dynamicObstacles.add(
+    //     Pair.of(
+    //       Field.NOTE_POSITIONS.get(note).get().minus(new Translation2d(noteAvoidRadius, noteAvoidRadius)),
+    //       Field.NOTE_POSITIONS.get(note).get().plus(new Translation2d(noteAvoidRadius, noteAvoidRadius))
+    //     )
+    //   );
+    // }
+    // Pathfinding.setDynamicObstacles(dynamicObstacles, swerveDrive.getPose().getTranslation());
   }
 
   /**
