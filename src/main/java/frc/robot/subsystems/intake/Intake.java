@@ -17,7 +17,7 @@ import frc.robot.util.hardware.SparkMaxUtil;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax motor;
-  private State state;
+  private State state = State.OFF;
  
   public static enum State {
     IN,
