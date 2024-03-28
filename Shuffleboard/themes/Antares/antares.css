@@ -1,0 +1,46 @@
+/*
+ * A variation on the builtin Midnight theme, swapping blues and purples for reds.
+ * This theme is merely to display that the builtin themes can be customized and
+ * how custom themes can be provided by plugins, and is not in any way indicative
+ * of the limits of customizing those themes - for details on the builtin themes,
+ * look at the material.css and base.css files in the API project and the
+ * light.css, dark.css, and midnight.css files in the app project on GitHub, as
+ * well as the JavaFX CSS reference:
+ * https://docs.oracle.com/cd/E17802_01/javafx/javafx/1.3/docs/api/javafx.scene/doc-files/cssref.html
+ */
+ @import "/edu/wpi/first/shuffleboard/app/midnight.css";
+
+ .root {
+     -swatch-gray: rgb(29, 35, 53);
+     -swatch-dark-gray: rgb(37, 46, 69);
+     -swatch-light-gray: rgb(57, 69, 106);
+     -yellow: rgb(242, 222, 139);
+     -swatch-100: -swatch-light-gray;
+     -swatch-200: -swatch-light-gray;
+     -swatch-300: -swatch-light-gray;
+     -swatch-400: -swatch-light-gray;
+     -swatch-500: -swatch-light-gray;
+     -confirmation-color-confirmed: rgb(86, 211, 100);
+     -confirmation-color-warning: rgb(226, 179, 64);
+     -confirmation-color-error: rgb(255, 123, 114);
+ }
+ 
+ .widget-pane {
+     -fx-grid-line-color: rgba(0, 0, 0, 0.1);
+ }
+ 
+ .layout-stack {
+     -fx-border-color: rgba(0, 0, 0, 0.0);
+ }
+ 
+ .tile {
+     -fx-effect: dropshadow(gaussian, derive(-swatch-gray, -80%), 10, 0.0, 2, 4);
+ }
+ 
+ .tile-title-bar {
+     -fx-background-color: -yellow;
+ }
+ 
+ #titleLabel * {
+     -fx-text-fill: -swatch-gray;
+ }
