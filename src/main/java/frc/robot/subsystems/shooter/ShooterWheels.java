@@ -155,6 +155,10 @@ public class ShooterWheels extends SubsystemBase {
   // This method will be called once per scheduler run during simulation
   }
 
+  public double getTargetVelocity() {
+    return speed;
+  }
+
   public Command calibrate() {
     SysIdRoutine calibrationRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),

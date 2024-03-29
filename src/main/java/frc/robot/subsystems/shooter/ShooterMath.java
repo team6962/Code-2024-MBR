@@ -105,7 +105,11 @@ public class ShooterMath {
   }
 
   public static Rotation2d calcPivotAngle(Translation3d targetPoint, SwerveDrive swerveDrive, Shooter shooter) {
-    return calcPivotAngle(targetPoint, swerveDrive, shooter, shooter.getWheels().getVelocity());
+    Rotation2d realPivot = calcPivotAngle(targetPoint, swerveDrive, shooter, shooter.getWheels().getVelocity());
+    if (realPivot == null) {
+      return calcPivotAngle(targetPoint, swerveDrive, shooter, shooter.getWheels().getTargetVelocity());
+    }
+    return realPivot;
   }
 
   /**
