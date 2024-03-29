@@ -136,6 +136,7 @@ public class RobotStateController extends SubsystemBase {
       case SHOOT:
         return Commands.sequence(
           Commands.waitUntil(() -> canShoot()),
+          intake.setState(Intake.State.IN),
           transfer.setState(Transfer.State.SHOOTER_FAST).until(() -> !hasNote()),
           transfer.setState(Transfer.State.SHOOTER_SLOW)
         ).raceWith(LEDs.setStateCommand(LEDs.State.RUNNING_COMMAND));
