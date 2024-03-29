@@ -103,7 +103,9 @@ public class RobotStateController extends SubsystemBase {
         return Commands.sequence(
           amp.setState(Amp.State.DOWN),
           amp.setState(Amp.State.IN).alongWith(
-            transfer.setState(Transfer.State.AMP)
+            transfer.setState(Transfer.State.AMP).alongWith(
+              intake.setState(Intake.State.SLOW_IN)
+            )
           ).until(() -> !hasNote()),
           Commands.parallel(
             transfer.setState(Transfer.State.AMP),

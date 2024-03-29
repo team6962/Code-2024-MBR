@@ -167,7 +167,7 @@ public final class Constants {
         public static final double kD = 0.0;
       }
 
-      public static final double ACCELERATION_REDUCTION = 1.25;//((SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION * SWERVE_DRIVE.ROBOT_MASS + ((SWERVE_DRIVE.PHYSICS.ROTATIONAL_INERTIA * SWERVE_DRIVE.PHYSICS.MAX_ANGULAR_ACCELERATION) / SWERVE_DRIVE.PHYSICS.DRIVE_RADIUS)) / (9.80 * SWERVE_DRIVE.ROBOT_MASS * SWERVE_DRIVE.FRICTION_COEFFICIENT));
+      public static final double ACCELERATION_REDUCTION = ((SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION * SWERVE_DRIVE.ROBOT_MASS + ((SWERVE_DRIVE.PHYSICS.ROTATIONAL_INERTIA * SWERVE_DRIVE.PHYSICS.MAX_ANGULAR_ACCELERATION) / SWERVE_DRIVE.PHYSICS.DRIVE_RADIUS)) / (9.80 * SWERVE_DRIVE.ROBOT_MASS * SWERVE_DRIVE.FRICTION_COEFFICIENT));
 
       public static final PathConstraints DEFAULT_PATH_CONSTRAINTS =
         new PathConstraints(
@@ -343,8 +343,8 @@ public final class Constants {
     public static final double SHOOTER_LENGTH = Units.inchesToMeters(15.023);
     
     public static final class PROFILE {
-      public static final double kP = 20.0;
-      public static final double kS = 0.3;
+      public static final double kP = 15.0;
+      public static final double kS = 0.2;
       public static final double MAX_ACCELERATION = 30.0; // rad/s^2
     }
   }

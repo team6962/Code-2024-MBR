@@ -75,15 +75,15 @@ public class Controls {
       driver.button(1).whileTrue(stateController.setState(RobotStateController.State.AIM_SPEAKER).alongWith(stateController.setState(RobotStateController.State.SPIN_UP)));
     }
 
-    operator.a().onTrue(shooterPivot.setTargetAngleCommand(() -> Rotation2d.fromDegrees(30.0)));
+    operator.a().whileTrue(shooterPivot.setTargetAngleCommand(() -> Rotation2d.fromDegrees(30.0)));
     operator.b();
     operator.x();
-    operator.y().onTrue(shooterPivot.setTargetAngleCommand(() -> Preferences.SHOOTER_PIVOT.MAX_ANGLE));
+    operator.y().whileTrue(shooterPivot.setTargetAngleCommand(() -> Preferences.SHOOTER_PIVOT.MAX_ANGLE));
     operator.start().whileTrue(stateController.setState(RobotStateController.State.LEAVE_AMP));
     operator.back().onTrue(stateController.setState(RobotStateController.State.CENTER_NOTE).andThen(Controls.rumbleBoth()));
     operator.leftBumper();
-    operator.rightBumper().whileTrue(stateController.setState(RobotStateController.State.INTAKE_AND_CENTER));
-    operator.leftStick().whileTrue(stateController.setState(RobotStateController.State.PREPARE_AMP));
+    operator.rightBumper().whileTrue(stateController.setState(RobotStateController.State.INTAKE));
+    operator.leftStick().onTrue(stateController.setState(RobotStateController.State.PREPARE_AMP));
     operator.rightStick().whileTrue(stateController.setState(RobotStateController.State.PLACE_AMP));
     operator.povCenter();
     operator.povUp().whileTrue(hang.setState(Hang.State.EXTEND));

@@ -162,7 +162,10 @@ public class ShooterMath {
     // System.out.println(inRange(aimingPoint, swerveDrive, shooter));
     
     if (Math.abs(swerveDrive.getHeading().minus(idealHeading).getRadians()) > acceptableError * 2.0) return false;
-    if (Math.abs(shooter.getPivot().getPosition().minus(idealPivotAngle).getRadians()) > acceptableError / 5.0) return false;
+
+    if (targetSize >= 10.0) return true;
+
+    if (Math.abs(shooter.getPivot().getPosition().minus(idealPivotAngle).getRadians()) > acceptableError / 3.0) return false;
     if (!inRange(aimingPoint, swerveDrive, shooter)) return false;
     return true;
   }

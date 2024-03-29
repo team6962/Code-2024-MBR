@@ -236,7 +236,7 @@ public class SwerveDrive extends SubsystemBase {
       visibleNotes.setPose(new Pose2d(notePosition, new Rotation2d()));
     }
 
-    getField().getObject("futurePose").setPose(getFuturePose());
+    // getField().getObject("futurePose").setPose(getFuturePose());
 
 
     // Pose2d randomPose = new Pose2d(

@@ -170,13 +170,18 @@ public class Autonomous extends Command {
     List<Translation2d> theoreticalNotePositions = Field.NOTE_POSITIONS.stream().map(Supplier::get).collect(Collectors.toList());
     Translation2d trueMeasuredNotePosition = measuredNotePosition;
     if ((measuredNotePosition.getX() > Field.LENGTH / 2.0 && Constants.IS_BLUE_TEAM.get()) || (measuredNotePosition.getX() < Field.LENGTH / 2.0 && !Constants.IS_BLUE_TEAM.get())) {
-      Translation2d relativeNotePosition = measuredNotePosition.minus(swerveDrive.getPose().getTranslation());
-      relativeNotePosition = relativeNotePosition.div(-relativeNotePosition.getX());
-      relativeNotePosition = relativeNotePosition.times(swerveDrive.getPose().getTranslation().getX() - Field.LENGTH / 2);
-      measuredNotePosition = relativeNotePosition.plus(swerveDrive.getPose().getTranslation());
+      // Translation2d relativeNotePosition = measuredNotePosition.minus(swerveDrive.getPose().getTranslation());
+      // relativeNotePosition = relativeNotePosition.div(-relativeNotePosition.getX());
+      // relativeNotePosition = relativeNotePosition.times(swerveDrive.getPose().getTranslation().getX() - Field.LENGTH / 2);
+      // measuredNotePosition = relativeNotePosition.plus(swerveDrive.getPose().getTranslation());
+      return null;
     }
     Translation2d theoreticalNoteCounterpart = measuredNotePosition.nearest(theoreticalNotePositions);
-    if (theoreticalNoteCounterpart.getDistance(queuedNotePosition) < 0.05 && Math.abs(queuedNotePosition.getX() - trueMeasuredNotePosition.getX()) < 1.0 && swerveDrive.getPose().getTranslation().getDistance(trueMeasuredNotePosition) < 4.0) {
+    if (
+      theoreticalNoteCounterpart.getDistance(queuedNotePosition) < 0.05 && 
+      Math.abs(queuedNotePosition.getX() - trueMeasuredNotePosition.getX()) < 1.0 && 
+      swerveDrive.getPose().getTranslation().getDistance(trueMeasuredNotePosition) < 4.0
+    ) {
       poses.add(new Pose2d(measuredNotePosition, new Rotation2d()));
       visibleNotes.setPoses(poses);
       return measuredNotePosition;
