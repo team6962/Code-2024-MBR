@@ -152,7 +152,7 @@ public class ShooterMath {
   public static boolean isAimed(Translation3d targetPoint, double targetSize, SwerveDrive swerveDrive, Shooter shooter) {
     Translation3d shooterLocation = calcShooterLocationOnField(swerveDrive, shooter);
     Translation3d aimingPoint = calcVelocityCompensatedPoint(targetPoint, swerveDrive, shooter, true);
-    double acceptableError = Math.atan(targetSize / targetPoint.getDistance(shooterLocation)) / 2.0;
+    double acceptableError = Math.atan(targetSize / (targetPoint.getDistance(shooterLocation) * 2.0));
     Rotation2d idealHeading = aimingPoint.toTranslation2d().minus(swerveDrive.getPose().getTranslation()).getAngle().plus(Rotation2d.fromDegrees(180.0));
     Logger.log("idealHeading", idealHeading.getDegrees());
     Logger.log("currentHeading", swerveDrive.getHeading().getDegrees());

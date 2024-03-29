@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -113,8 +112,6 @@ public class Shooter extends SubsystemBase {
     Logger.log("realProjectileVelocity", ShooterMath.calcProjectileVelocity(shooterWheels.getVelocity()));
 
 
-    System.out.println(ShooterMath.calcPivotAngle(aimingPoint.get(), swerveDrive, this, Constants.SHOOTER_WHEELS.MAX_WHEEL_SPEED));
-
     // System.out.println(ShooterMath.calcProjectileVelocity(
     //           ShooterMath.calcVelocityCompensatedPoint(
     //             aimingPoint.get(),
@@ -166,18 +163,20 @@ public class Shooter extends SubsystemBase {
 
   public Command aim(Supplier<Translation3d> point, double targetSize) {
 
-    Supplier<Translation3d> finalPoint = () -> {
-      if (point.get().getZ() == 0.0) {
-        Translation2d newPoint = point.get().toTranslation2d().minus(swerveDrive.getPose().getTranslation()).rotateBy(Rotation2d.fromDegrees(-20.0)).plus(swerveDrive.getPose().getTranslation());
-        return new Translation3d(
-          newPoint.getX(),
-          newPoint.getY(),
-          0.0
-        );
-      } else {
-        return point.get();
-      }
-    };
+    // Supplier<Translation3d> finalPoint = () -> {
+    //   if (point.get().getZ() == 0.0) {
+    //     Translation2d newPoint = point.get().toTranslation2d().minus(swerveDrive.getPose().getTranslation()).rotateBy(Rotation2d.fromDegrees(-20.0 * (1.0 - shooterWheels.getVelocity() / Constants.SHOOTER_WHEELS.MAX_WHEEL_SPEED))).plus(swerveDrive.getPose().getTranslation());
+    //     return new Translation3d(
+    //       newPoint.getX(),
+    //       newPoint.getY(),
+    //       0.0
+    //     );
+    //   } else {
+    //     return point.get();
+    //   }
+    // };
+
+    Supplier<Translation3d> finalPoint = () -> point.get();
     // Calculate point to aim towards, accounting for current velocity
     return shooterPivot.setTargetAngleCommand(() -> 
       ShooterMath.calcPivotAngle(
