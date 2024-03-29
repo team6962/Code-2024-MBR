@@ -11,8 +11,6 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -50,9 +48,7 @@ public class Autonomous extends Command {
 
   public Translation2d targetedNote;
   public Translation2d visionNoise = new Translation2d();
-
-  public Debouncer hasNoteDebouncer = new Debouncer(0.25, DebounceType.kFalling);
-  
+    
   // private static ShuffleboardTab tab = Shuffleboard.getTab("Autonomous Sim");
   // private static SimpleWidget hasNote = tab.add("has Note", true).withWidget(BuiltInWidgets.kToggleButton).withSize(1, 1).withPosition(0, 0);
   
@@ -355,7 +351,7 @@ public class Autonomous extends Command {
         moveCommand
           .alongWith(
             Commands.sequence(
-              Commands.waitSeconds(1.0).onlyIf(() -> isFirstNote),
+              // Commands.waitSeconds(1.0).onlyIf(() -> isFirstNote),
               Commands.waitUntil(() -> inRange(swerveDrive.getPose().getTranslation())),
               Commands.run(() -> {
                 if (controller.canShoot()) simulatedNote = false;
@@ -451,10 +447,10 @@ public class Autonomous extends Command {
 
   public boolean hasNote() {
     if (RobotBase.isSimulation()) {
-      return hasNoteDebouncer.calculate(simulatedNote);
+      return simulatedNote;
       // return hasNote.getEntry().getBoolean(false);
     } else {
-      return hasNoteDebouncer.calculate(controller.hasNote());
+      return controller.hasNote();
     }
   }
 

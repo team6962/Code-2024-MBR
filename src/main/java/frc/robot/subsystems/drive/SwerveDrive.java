@@ -236,6 +236,9 @@ public class SwerveDrive extends SubsystemBase {
       visibleNotes.setPose(new Pose2d(notePosition, new Rotation2d()));
     }
 
+    getField().getObject("futurePose").setPose(getFuturePose());
+
+
     // Pose2d randomPose = new Pose2d(
     //   new Translation2d(
     //     Field.LENGTH * Math.random(),
@@ -740,7 +743,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public boolean underStage() {
-    if (RobotState.isAutonomous()) {
+    if (!RobotState.isAutonomous()) {
       return MathUtils.isInsideTriangle(Field.BLUE_STAGE_CORNERS[0], Field.BLUE_STAGE_CORNERS[1], Field.BLUE_STAGE_CORNERS[2], getFuturePose().getTranslation()) ||
              MathUtils.isInsideTriangle(Field.RED_STAGE_CORNERS[0], Field.RED_STAGE_CORNERS[1], Field.RED_STAGE_CORNERS[2], getFuturePose().getTranslation()) ||
              MathUtils.isInsideTriangle(Field.BLUE_STAGE_CORNERS[0], Field.BLUE_STAGE_CORNERS[1], Field.BLUE_STAGE_CORNERS[2], getPose().getTranslation()) ||
