@@ -67,7 +67,7 @@ public class ShooterMath {
     double floorDistance = shooterLocation.toTranslation2d().getDistance(targetPoint.toTranslation2d());
     double gravity = 9.80;
     double velocity = (Math.sqrt(floorDistance) * Math.sqrt(gravity) * Math.sqrt(Math.pow(Math.tan(exitAngle.getRadians()), 2.0) + 1)) / Math.sqrt(2.0 * Math.tan(exitAngle.getRadians()) - (2.0 * targetHeight / floorDistance));
-
+    
     if (Double.isNaN(velocity)) velocity = Constants.SHOOTER_WHEELS.TOP_EXIT_VELOCITY;
     return velocity;
   }
