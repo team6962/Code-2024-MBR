@@ -51,7 +51,7 @@ public class Autonomous extends Command {
   public Translation2d targetedNote;
   public Translation2d visionNoise = new Translation2d();
 
-  public Debouncer hasNoteDebouncer = new Debouncer(0.05, DebounceType.kFalling);
+  public Debouncer hasNoteDebouncer = new Debouncer(0.1, DebounceType.kFalling);
   
   // private static ShuffleboardTab tab = Shuffleboard.getTab("Autonomous Sim");
   // private static SimpleWidget hasNote = tab.add("has Note", true).withWidget(BuiltInWidgets.kToggleButton).withSize(1, 1).withPosition(0, 0);
