@@ -748,6 +748,12 @@ public class SwerveDrive extends SubsystemBase {
     return new Pose2d(futurePosition, getPose().getRotation());
   }
 
+  public Pose2d getFuturePoseStage() {
+    Translation2d futurePosition = getPose().getTranslation();
+    futurePosition = futurePosition.plus(getFieldVelocity().times(getFieldVelocity().getNorm()).div(1.0 * Constants.SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION));
+    return new Pose2d(futurePosition, getPose().getRotation());
+  }
+
   public boolean underStage() {
     if (!RobotState.isAutonomous()) {
       return MathUtils.isInsideTriangle(Field.BLUE_STAGE_CORNERS[0], Field.BLUE_STAGE_CORNERS[1], Field.BLUE_STAGE_CORNERS[2], getFuturePose().getTranslation()) ||
@@ -755,8 +761,8 @@ public class SwerveDrive extends SubsystemBase {
              MathUtils.isInsideTriangle(Field.BLUE_STAGE_CORNERS[0], Field.BLUE_STAGE_CORNERS[1], Field.BLUE_STAGE_CORNERS[2], getPose().getTranslation()) ||
              MathUtils.isInsideTriangle(Field.RED_STAGE_CORNERS[0], Field.RED_STAGE_CORNERS[1], Field.RED_STAGE_CORNERS[2], getPose().getTranslation());
     } else {
-      return MathUtils.isInsideTriangle(Field.BLUE_STAGE_CORNERS[0], Field.BLUE_STAGE_CORNERS[1], Field.BLUE_STAGE_CORNERS[2], getFuturePose().getTranslation()) ||
-             MathUtils.isInsideTriangle(Field.RED_STAGE_CORNERS[0], Field.RED_STAGE_CORNERS[1], Field.RED_STAGE_CORNERS[2], getFuturePose().getTranslation());
+      return MathUtils.isInsideTriangle(Field.BLUE_STAGE_CORNERS[0], Field.BLUE_STAGE_CORNERS[1], Field.BLUE_STAGE_CORNERS[2], getFuturePoseStage().getTranslation()) ||
+             MathUtils.isInsideTriangle(Field.RED_STAGE_CORNERS[0], Field.RED_STAGE_CORNERS[1], Field.RED_STAGE_CORNERS[2], getFuturePoseStage().getTranslation());
     }
   }
 

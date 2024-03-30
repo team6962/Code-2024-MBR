@@ -87,7 +87,6 @@ public final class Field {
     // point2d(1.5, 5.5),
     // point2d(1.5, 3.5),
     // point2d(1.5, 7.0)
-    point2d(2.0, 3.5),
     () -> new Translation2d(flipIfRed(1.5).get(), Field.SPEAKER.get().getY())
   );
 

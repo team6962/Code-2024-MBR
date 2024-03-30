@@ -367,7 +367,7 @@ public class Autonomous extends Command {
       }),
       Commands.race(
         moveCommand
-          .alongWith(
+          .andThen(
             Commands.sequence(
               // Commands.waitSeconds(1.0).onlyIf(() -> isFirstNote),
               Commands.waitUntil(() -> inRange(swerveDrive.getPose().getTranslation())),
@@ -375,7 +375,7 @@ public class Autonomous extends Command {
                 if (controller.canShoot()) simulatedNote = false;
               }).until(() -> simulatedNote == false).onlyIf(() -> RobotBase.isSimulation()),
               controller.setState(RobotStateController.State.SHOOT).until(() -> !hasNote())
-            ).onlyIf(() -> nearSpeaker())
+            ).onlyWhile(() -> nearSpeaker())
           ),
         controller.setState(RobotStateController.State.AIM_SPEAKER),
         controller.setState(RobotStateController.State.SPIN_UP)
