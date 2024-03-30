@@ -60,7 +60,7 @@ public class RobotContainer {
   public RobotContainer() {
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog(), true);
-    Logger.autoLog("PDH", PDH);
+    // Logger.autoLog("PDH", PDH);
 
     Logger.startLog();
     AutonChooser.init();
@@ -75,7 +75,7 @@ public class RobotContainer {
     StatusChecks.addCheck(new SubsystemBase() {}, "Joystick 1", () -> DriverStation.isJoystickConnected(1));
     StatusChecks.addCheck(new SubsystemBase() {}, "Battery Voltage", () -> RobotController.getBatteryVoltage() > 12.0);
     // StatusChecks.addCheck(new SubsystemBase() {}, "RSL", () -> RobotController.getRSLState());
-    StatusChecks.addCheck(new SubsystemBase() {}, "Loop Time", () -> Robot.getLoopTime() <= 0.02);
+    StatusChecks.addCheck(new SubsystemBase() {}, "Loop Time", () -> Robot.getComputeTime() <= 0.02);
     StatusChecks.addCheck(new SubsystemBase() {}, "3V3 Enabled", () -> RobotController.getEnabled3V3());
     StatusChecks.addCheck(new SubsystemBase() {}, "5V Enabled", () -> RobotController.getEnabled5V());
     StatusChecks.addCheck(new SubsystemBase() {}, "6V Enabled", () -> RobotController.getEnabled6V());

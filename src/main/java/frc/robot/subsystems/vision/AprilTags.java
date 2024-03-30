@@ -21,7 +21,6 @@ import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.util.software.LimelightHelpers;
 import frc.robot.util.software.LimelightHelpers.PoseEstimate;
-import frc.robot.util.software.Logging.Logger;
 
 
 public class AprilTags extends SubsystemBase {
@@ -83,7 +82,6 @@ public class AprilTags extends SubsystemBase {
 
       poses.add(pose2d);
       translationError += 0.5;
-      Logger.log("visionPose", pose2d);
       
       if (translationError < (double) bestPoseEstimate.get("translationError") || rotationError < Units.degreesToRadians(360.0)) {
         bestPoseEstimate.put("pose", pose2d);
@@ -96,7 +94,6 @@ public class AprilTags extends SubsystemBase {
 
     if ((int) bestPoseEstimate.get("tagCount") > 0) {
       // Logger.log("canChangeHeading", canChangeHeading);
-      Logger.log("translationError", (double) bestPoseEstimate.get("translationError"));
       // Logger.log("rotationAccuracy", rotationError);
       // Logger.log("poseRotation", pose2d.getRotation().getDegrees());
 

@@ -12,6 +12,7 @@ import frc.robot.Constants.Constants.ENABLED_SYSTEMS;
 import frc.robot.Constants.Preferences;
 import frc.robot.Constants.Preferences.VOLTAGE_LADDER;
 import frc.robot.util.hardware.SparkMaxUtil;
+import frc.robot.util.software.Logging.Logger;
 
 
 
@@ -32,6 +33,8 @@ public class Intake extends SubsystemBase {
     SparkMaxUtil.configureAndLog(this, motor, false, CANSparkMax.IdleMode.kCoast);
     SparkMaxUtil.configureCANStatusFrames(motor, false, false);
     SparkMaxUtil.save(motor);
+    
+    Logger.autoLog(this, "state", () -> state.name());
   }
 
   public Command setState(State state) {

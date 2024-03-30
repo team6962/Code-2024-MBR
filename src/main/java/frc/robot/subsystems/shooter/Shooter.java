@@ -52,25 +52,7 @@ public class Shooter extends SubsystemBase {
     this.swerveDrive = swerveDrive;
     
     Logger.autoLog(this, "Is Aimed", () -> isAimed());
-    Logger.autoLog(this, "Shooter Position", () -> ShooterMath.calcShooterLocationOnField(swerveDrive, this));
-    Logger.autoLog(this, "Straight Line Angle", () -> {
-      Translation3d loc = Field.SPEAKER.get().minus(ShooterMath.calcShooterLocationOnField(swerveDrive, this));
-      return Rotation2d.fromRadians(Math.atan(loc.getZ() / loc.toTranslation2d().getNorm())).minus(Constants.SHOOTER_PIVOT.NOTE_ROTATION_OFFSET).getRadians();
-    }
-    );
-    Logger.autoLog(this, "Speaker Distance", () -> ShooterMath.calcShooterLocationOnField(swerveDrive, this).getDistance(Field.SPEAKER.get()));
-    Logger.autoLog(this, "Speaker Height", () -> ShooterMath.calcShooterLocationOnField(swerveDrive, this).minus(Field.SPEAKER.get()).getZ());
-    Logger.autoLog(this, "Speaker Floor Distance", () -> ShooterMath.calcShooterLocationOnField(swerveDrive, this).toTranslation2d().getDistance(Field.SPEAKER.get().toTranslation2d()));
-    Logger.autoLog(this, "Shot Heading", () -> ShooterMath.calcVelocityCompensatedPoint(
-          Field.SPEAKER.get(),
-          swerveDrive,
-          this
-        ).toTranslation2d().minus(swerveDrive.getPose().getTranslation()).getAngle().plus(Rotation2d.fromDegrees(180.0)).getDegrees());
-    Logger.autoLog(this, "Aiming Point", () -> ShooterMath.calcVelocityCompensatedPoint(
-      Field.SPEAKER.get(),
-      swerveDrive,
-      this
-    ));
+
     SmartDashboard.putData("ShooterMechanism", mechanism);
   }
   
@@ -103,16 +85,6 @@ public class Shooter extends SubsystemBase {
     SwerveDrive.getField().getObject("Aiming Point").setPose(new Pose2d(aimingPoint.get().toTranslation2d(), new Rotation2d()));
     SwerveDrive.getField().getObject("Velocity Compensated Point").setPose(new Pose2d(compensatedAimingPoint.toTranslation2d(), new Rotation2d()));
     
-    Logger.log("compensatedAimingPoint", compensatedAimingPoint);
-    Logger.log("targetPivotAngle", pivotAngle == null ? 0.0 : pivotAngle.getDegrees());
-    Logger.log("realPivotAngle", shooterPivot.getPosition().getDegrees());
-    Logger.log("flightTime", flightTime);
-    Logger.log("targetShooterWheelVelocity", shooterWheelVelocity);
-    Logger.log("realShooterWheelVelocity", shooterWheels.getVelocity());
-    Logger.log("targetProjectileVelocity", projectileVelocity);
-    Logger.log("realProjectileVelocity", ShooterMath.calcProjectileVelocity(shooterWheels.getVelocity()));
-
-
     // System.out.println(ShooterMath.calcProjectileVelocity(
     //           ShooterMath.calcVelocityCompensatedPoint(
     //             aimingPoint.get(),

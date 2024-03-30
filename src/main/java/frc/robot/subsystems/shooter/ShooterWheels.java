@@ -76,7 +76,11 @@ public class ShooterWheels extends SubsystemBase {
     SparkMaxUtil.configureCANStatusFrames(feedMotor, false, false);
     SparkMaxUtil.save(feedMotor);
 
-     new TunableNumber(this, "Flywheel Velcotiy", (x) -> setTargetWheelSpeedCommand(() -> x).schedule(), 0);
+    new TunableNumber(this, "Flywheel Velcotiy", (x) -> setTargetWheelSpeedCommand(() -> x).schedule(), 0);
+
+    Logger.autoLog(this, "velocity", () -> getVelocity());
+    Logger.autoLog(this, "targetVelocity", () -> speed);
+    Logger.autoLog(this, "state", () -> state.name());
   }
 
   public Command setState(State state) {
@@ -111,8 +115,6 @@ public class ShooterWheels extends SubsystemBase {
       state = State.SPIN_UP;
       speed = ShooterMath.calcShooterWheelVelocity(Constants.SHOOTER_WHEELS.TOP_EXIT_VELOCITY);
     }
-
-    Logger.log("encoder.getVelocity();", getVelocity());
 
     // System.out.println(speed);
     // System.out.println(ShooterMath.calcProjectileVelocity(ShooterMath.calcShooterWheelVelocity(speed)));

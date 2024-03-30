@@ -11,7 +11,6 @@ import frc.robot.Constants.Constants.SHOOTER_PIVOT;
 import frc.robot.Constants.Constants.SHOOTER_WHEELS;
 import frc.robot.Constants.Preferences;
 import frc.robot.subsystems.drive.SwerveDrive;
-import frc.robot.util.software.Logging.Logger;
 
 public class ShooterMath {
   
@@ -154,8 +153,7 @@ public class ShooterMath {
     Translation3d aimingPoint = calcVelocityCompensatedPoint(targetPoint, swerveDrive, shooter, true);
     double acceptableError = Math.atan(targetSize / (targetPoint.getDistance(shooterLocation) * 2.0));
     Rotation2d idealHeading = aimingPoint.toTranslation2d().minus(swerveDrive.getPose().getTranslation()).getAngle().plus(Rotation2d.fromDegrees(180.0));
-    Logger.log("idealHeading", idealHeading.getDegrees());
-    Logger.log("currentHeading", swerveDrive.getHeading().getDegrees());
+
     Rotation2d idealPivotAngle = calcPivotAngle(aimingPoint, swerveDrive, shooter, shooter.getWheels().getVelocity());
     if (targetSize >= 10.0) idealPivotAngle = calcPivotAngle(aimingPoint, swerveDrive, shooter);
     if (idealPivotAngle == null) return false;
@@ -278,8 +276,6 @@ public class ShooterMath {
     
     double flightTime = calculateFlightTime(targetPoint, swerveDrive, shooter);
 
-    Logger.log("flightTime", flightTime);
-    Logger.log("currentVelocity", currentVelocity);
     if (Double.isNaN(flightTime) || Double.isInfinite(flightTime)) return targetPoint;
     
     Translation2d projectileOffset = currentVelocity.times(flightTime);
@@ -296,8 +292,6 @@ public class ShooterMath {
       targetPoint.getZ()
     );
     
-    Logger.log("velocityCompensatedPoint", velocityCompensatedPoint);
-
     return velocityCompensatedPoint;
   }
 

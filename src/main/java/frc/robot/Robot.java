@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
 
   private static double time = 0;
   private static double loopTime = 0;
+  private static double computeTime = 0;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -53,15 +54,22 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    loopTime = Timer.getFPGATimestamp() - time;
+    double timestampBefore = Timer.getFPGATimestamp();
+    loopTime = timestampBefore - time;
     CommandScheduler.getInstance().run();
-    time = Timer.getFPGATimestamp();
+    double timestampAfter = Timer.getFPGATimestamp();
+    time = timestampAfter;
+    computeTime = timestampAfter - timestampBefore;
 
 
   }
 
   public static double getLoopTime() {
     return loopTime;
+  }
+
+  public static double getComputeTime() {
+    return computeTime;
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

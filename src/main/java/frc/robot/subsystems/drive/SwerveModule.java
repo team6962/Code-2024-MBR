@@ -42,7 +42,6 @@ import frc.robot.Constants.Constants.SWERVE_DRIVE.STEER_MOTOR_PROFILE;
 import frc.robot.Constants.Preferences.VOLTAGE_LADDER;
 import frc.robot.util.hardware.SparkMaxUtil;
 import frc.robot.util.software.MathUtils.SwerveMath;
-import frc.robot.util.software.Logging.Logger;
 import frc.robot.util.software.Logging.StatusChecks;
 
 public class SwerveModule extends SubsystemBase {
@@ -110,8 +109,8 @@ public class SwerveModule extends SubsystemBase {
     SparkMaxUtil.configurePID(this, driveMotor, DRIVE_MOTOR_PROFILE.kP, DRIVE_MOTOR_PROFILE.kI, DRIVE_MOTOR_PROFILE.kD, 0.0, false);
     SparkMaxUtil.configurePID(this, steerMotor, STEER_MOTOR_PROFILE.kP, STEER_MOTOR_PROFILE.kI, STEER_MOTOR_PROFILE.kD, 0.0, true);
 
-    // driveMotor.setClosedLoopRampRate(SWERVE_DRIVE.PHYSICS.MAX_LINEAR_VELOCITY / SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION);
-    // driveMotor.setOpenLoopRampRate(SWERVE_DRIVE.PHYSICS.MAX_LINEAR_VELOCITY / SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION);
+    driveMotor.setClosedLoopRampRate(SWERVE_DRIVE.PHYSICS.MAX_LINEAR_VELOCITY / SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION);
+    driveMotor.setOpenLoopRampRate(SWERVE_DRIVE.PHYSICS.MAX_LINEAR_VELOCITY / SWERVE_DRIVE.PHYSICS.MAX_LINEAR_ACCELERATION);
     
     SparkMaxUtil.configureCANStatusFrames(driveMotor, true, true);
     SparkMaxUtil.configureCANStatusFrames(steerMotor, false, true);
@@ -119,12 +118,12 @@ public class SwerveModule extends SubsystemBase {
     seedSteerEncoder();
 
     String logPath = "module" + name + "/";
-    Logger.autoLog(this, logPath + "measuredState",           () -> getMeasuredState());
-    Logger.autoLog(this, logPath + "measuredAngle",           () -> getMeasuredState().angle.getDegrees());
-    Logger.autoLog(this, logPath + "measuredVelocity",        () -> getMeasuredState().speedMetersPerSecond);
-    Logger.autoLog(this, logPath + "targetState",             () -> getTargetState());
-    Logger.autoLog(this, logPath + "targetAngle",             () -> getTargetState().angle.getDegrees());
-    Logger.autoLog(this, logPath + "targetVelocity",          () -> getTargetState().speedMetersPerSecond);
+    // Logger.autoLog(this, logPath + "measuredState",           () -> getMeasuredState());
+    // Logger.autoLog(this, logPath + "measuredAngle",           () -> getMeasuredState().angle.getDegrees());
+    // Logger.autoLog(this, logPath + "measuredVelocity",        () -> getMeasuredState().speedMetersPerSecond);
+    // Logger.autoLog(this, logPath + "targetState",             () -> getTargetState());
+    // Logger.autoLog(this, logPath + "targetAngle",             () -> getTargetState().angle.getDegrees());
+    // Logger.autoLog(this, logPath + "targetVelocity",          () -> getTargetState().speedMetersPerSecond);
 
     StatusChecks.addCheck(this, name + "canCoderHasFaults", () -> absoluteSteerEncoder.getFaultField().getValue() == 0);
     StatusChecks.addCheck(this, name + "canCoderIsConnected", () -> absoluteSteerEncoder.getVersion().getValue() != 0);
