@@ -42,6 +42,7 @@ import frc.robot.Constants.Constants.SWERVE_DRIVE.STEER_MOTOR_PROFILE;
 import frc.robot.Constants.Preferences.VOLTAGE_LADDER;
 import frc.robot.util.hardware.SparkMaxUtil;
 import frc.robot.util.software.MathUtils.SwerveMath;
+import frc.robot.util.software.Logging.Logger;
 import frc.robot.util.software.Logging.StatusChecks;
 
 public class SwerveModule extends SubsystemBase {
@@ -122,12 +123,8 @@ public class SwerveModule extends SubsystemBase {
     seedSteerEncoder();
 
     String logPath = "module" + name + "/";
-    // Logger.autoLog(this, logPath + "measuredState",           () -> getMeasuredState());
-    // Logger.autoLog(this, logPath + "measuredAngle",           () -> getMeasuredState().angle.getDegrees());
-    // Logger.autoLog(this, logPath + "measuredVelocity",        () -> getMeasuredState().speedMetersPerSecond);
-    // Logger.autoLog(this, logPath + "targetState",             () -> getTargetState());
-    // Logger.autoLog(this, logPath + "targetAngle",             () -> getTargetState().angle.getDegrees());
-    // Logger.autoLog(this, logPath + "targetVelocity",          () -> getTargetState().speedMetersPerSecond);
+    Logger.autoLog(this, logPath + "relativeSteerDirection",           () -> relativeSteerDirection.getDegrees());
+    Logger.autoLog(this, logPath + "absoluteSteerDirection",        () -> absoluteSteerDirection.getDegrees());
 
     StatusChecks.addCheck(this, name + "canCoderHasFaults", () -> absoluteSteerEncoder.getFaultField().getValue() == 0);
     StatusChecks.addCheck(this, name + "canCoderIsConnected", () -> absoluteSteerEncoder.getVersion().getValue() != 0);

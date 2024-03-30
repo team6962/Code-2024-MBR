@@ -92,6 +92,8 @@ public class SwerveDrive extends SubsystemBase {
   private boolean isDriven = false;
   private boolean gyroConnected = false;
 
+  private double angularAcceleration = 0.0;
+
   private Supplier<Translation2d> rotationOverridePoint = null;
   private Rotation2d rotationOverrideOffset = new Rotation2d();
 
@@ -159,9 +161,12 @@ public class SwerveDrive extends SubsystemBase {
     Logger.autoLog(this, "modulePositions", () -> getModulePositions());
     Logger.autoLog(this, "gyroAcceleration", () -> Math.hypot(gyro.getWorldLinearAccelX(), gyro.getWorldLinearAccelY()));
     Logger.autoLog(this, "gyroVelocity", () -> Math.hypot(gyro.getVelocityX(), gyro.getVelocityY()));
-    Logger.autoLog(this, "commandedAcceleration", () -> linearAcceleration.getNorm());
-    Logger.autoLog(this, "commandedVelocity", () -> Math.hypot(getDrivenChassisSpeeds().vxMetersPerSecond, getDrivenChassisSpeeds().vyMetersPerSecond));
-    Logger.autoLog(this, "measuredVelocity", () -> Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond, getMeasuredChassisSpeeds().vyMetersPerSecond));
+    Logger.autoLog(this, "commandedLinearAcceleration", () -> linearAcceleration.getNorm());
+    Logger.autoLog(this, "commandedLinearVelocity", () -> Math.hypot(getDrivenChassisSpeeds().vxMetersPerSecond, getDrivenChassisSpeeds().vyMetersPerSecond));
+    Logger.autoLog(this, "commandedAngularAcceleration", () -> angularAcceleration);
+    Logger.autoLog(this, "commandedAngularVelocity", () -> getDrivenChassisSpeeds().omegaRadiansPerSecond);
+    Logger.autoLog(this, "measuredAngularVelocity", () -> getMeasuredChassisSpeeds().omegaRadiansPerSecond);
+    Logger.autoLog(this, "measuredLinearVelocity", () -> Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond, getMeasuredChassisSpeeds().vyMetersPerSecond));
     Logger.autoLog(this, "gyroIsCalibrating", () -> gyro.isCalibrating());
     Logger.autoLog(this, "gyroIsConnected", () -> gyro.isConnected());
     Logger.autoLog(this, "gyroRawDegrees", () -> gyro.getRotation2d().getDegrees());
@@ -207,8 +212,7 @@ public class SwerveDrive extends SubsystemBase {
       setTargetHeading(getHeading());
       isAligning = false;
       rotationOverridePoint = null;
-    }
-    
+    }    
     
     updateOdometry();
 
@@ -425,7 +429,7 @@ public class SwerveDrive extends SubsystemBase {
     // Limit rotational acceleration
     double targetAngularVelocity = fieldRelativeSpeeds.omegaRadiansPerSecond;
     double currentAngularVelocity = drivenChassisSpeeds.omegaRadiansPerSecond;
-    double angularAcceleration = (targetAngularVelocity - currentAngularVelocity) / Robot.getLoopTime();
+    angularAcceleration = (targetAngularVelocity - currentAngularVelocity) / Robot.getLoopTime();
     double angularForce = Math.abs((SWERVE_DRIVE.PHYSICS.ROTATIONAL_INERTIA * angularAcceleration) / SWERVE_DRIVE.PHYSICS.DRIVE_RADIUS);
     
     double frictionForce = 9.80 * SWERVE_DRIVE.ROBOT_MASS * SWERVE_DRIVE.FRICTION_COEFFICIENT;

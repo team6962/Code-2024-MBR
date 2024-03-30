@@ -102,7 +102,7 @@ public final class Constants {
     public static final double   WHEEL_WIDTH                        = Units.inchesToMeters(2.0);
     public static final double   DRIVE_MOTOR_GEARING                = 6.75;
     public static final double   STEER_MOTOR_GEARING                = 150.0 / 7.0;
-    public static final double   GEARBOX_EFFICIENCY                 = 1.0;
+    public static final double   GEARBOX_EFFICIENCY                 = 0.975;
     public static final double   BATTERY_RESISTANCE                 = 0.02; // ohms
     public static final double   BATTERY_VOLTAGE                    = 12.6; // volts
     public static final double   BROWNOUT_VOLTAGE                   = 6.8; // volts
@@ -277,7 +277,8 @@ public final class Constants {
   }
 
   public static final class NEO {
-    public static final DCMotor STATS = DCMotor.getNEO(1);
+    public static final DCMotor STATS = new DCMotor(12.0, 3.0, 160.0, 2.065, Units.rotationsPerMinuteToRadiansPerSecond(5820), 1);
+
     public static final double SAFE_TEMPERATURE = 60;
     public static final int SAFE_STALL_CURRENT = 40;
     public static final int SAFE_FREE_CURRENT = 60;
