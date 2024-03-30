@@ -116,6 +116,9 @@ public class SwerveModule extends SubsystemBase {
     SparkMaxUtil.configureCANStatusFrames(driveMotor, true, true);
     SparkMaxUtil.configureCANStatusFrames(steerMotor, false, true);
     
+    SparkMaxUtil.save(driveMotor);
+    SparkMaxUtil.save(steerMotor);
+
     seedSteerEncoder();
 
     String logPath = "module" + name + "/";
@@ -170,7 +173,7 @@ public class SwerveModule extends SubsystemBase {
       seedSteerEncoder();
     }
   }
-    
+  
   public void setTargetState(SwerveModuleState state) {
     targetState = SwerveModuleState.optimize(state, getMeasuredState().angle);
   }

@@ -97,6 +97,7 @@ public final class SparkMaxUtil {
   }
 
   public static void save(CANSparkMax motor) {
+    configure(() -> motor.setCANTimeout(0), motor);
     configure(() -> motor.burnFlash(), motor);
   }
 }
