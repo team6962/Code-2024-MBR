@@ -37,7 +37,7 @@ public class Autonomous extends Command {
   private List<Integer> remainingNotes = List.of();
 
   private double noteAvoidRadius = (Field.NOTE_LENGTH / 2.0 + Constants.SWERVE_DRIVE.BUMPER_DIAGONAL / 2.0);
-  private double notePickupDistance = Constants.SWERVE_DRIVE.BUMPER_LENGTH / 2.0;
+  private double notePickupDistance = Constants.SWERVE_DRIVE.BUMPER_LENGTH / 2.0 - Field.NOTE_LENGTH / 2.0;
   private double noteAlignDistance = Constants.SWERVE_DRIVE.BUMPER_LENGTH / 2.0 + Field.NOTE_LENGTH;
   private double speakerShotDistance = 5.0;
   private double adjacentNoteBand = 1.0;
@@ -169,13 +169,22 @@ public class Autonomous extends Command {
 
     List<Translation2d> theoreticalNotePositions = Field.NOTE_POSITIONS.stream().map(Supplier::get).collect(Collectors.toList());
     Translation2d trueMeasuredNotePosition = measuredNotePosition;
-    if ((measuredNotePosition.getX() > Field.LENGTH / 2.0 && Constants.IS_BLUE_TEAM.get()) || (measuredNotePosition.getX() < Field.LENGTH / 2.0 && !Constants.IS_BLUE_TEAM.get())) {
+
+    if ((measuredNotePosition.getX() > (Field.LENGTH / 2.0 + Field.NOTE_LENGTH * 2.0) && Constants.IS_BLUE_TEAM.get()) || (measuredNotePosition.getX() < (Field.LENGTH / 2.0 - Field.NOTE_LENGTH * 2.0) && !Constants.IS_BLUE_TEAM.get())) {
       // Translation2d relativeNotePosition = measuredNotePosition.minus(swerveDrive.getPose().getTranslation());
       // relativeNotePosition = relativeNotePosition.div(-relativeNotePosition.getX());
       // relativeNotePosition = relativeNotePosition.times(swerveDrive.getPose().getTranslation().getX() - Field.LENGTH / 2);
       // measuredNotePosition = relativeNotePosition.plus(swerveDrive.getPose().getTranslation());
       return null;
     }
+
+    if ((measuredNotePosition.getX() > (Field.LENGTH / 2.0) && Constants.IS_BLUE_TEAM.get()) || (measuredNotePosition.getX() < (Field.LENGTH / 2.0) && !Constants.IS_BLUE_TEAM.get())) {
+      Translation2d relativeNotePosition = measuredNotePosition.minus(swerveDrive.getPose().getTranslation());
+      relativeNotePosition = relativeNotePosition.div(-relativeNotePosition.getX());
+      relativeNotePosition = relativeNotePosition.times(swerveDrive.getPose().getTranslation().getX() - Field.LENGTH / 2);
+      measuredNotePosition = relativeNotePosition.plus(swerveDrive.getPose().getTranslation());
+    }
+    
     Translation2d theoreticalNoteCounterpart = measuredNotePosition.nearest(theoreticalNotePositions);
     if (
       theoreticalNoteCounterpart.getDistance(queuedNotePosition) < 0.05 && 
@@ -295,7 +304,7 @@ public class Autonomous extends Command {
       }),
       AutoBuilder.followPath(path).andThen(
           Commands.runOnce(() -> simulatedNote = true),
-          Commands.waitSeconds(0.5)
+          Commands.waitSeconds(0.25)
         ).raceWith(
           Commands.sequence(
             //Commands.waitUntil(() -> swerveDrive.getFuturePose().getTranslation().getDistance(notePosition) < 2.0),

@@ -77,7 +77,7 @@ public class Controls {
 
     operator.a().whileTrue(shooterPivot.setTargetAngleCommand(() -> Rotation2d.fromDegrees(30.0)));
     operator.b();
-    operator.x();
+    operator.x().whileTrue(stateController.setState(RobotStateController.State.SHOOT_OVERIDE));
     operator.y().whileTrue(shooterPivot.setTargetAngleCommand(() -> Preferences.SHOOTER_PIVOT.MAX_ANGLE));
     operator.start().whileTrue(stateController.setState(RobotStateController.State.LEAVE_AMP));
     operator.back().onTrue(stateController.setState(RobotStateController.State.CENTER_NOTE).andThen(Controls.rumbleBoth()));
@@ -90,7 +90,7 @@ public class Controls {
     operator.povDown().whileTrue(hang.setState(Hang.State.RETRACT));
     operator.povLeft().whileTrue(stateController.setState(RobotStateController.State.INTAKE_OUT));
     operator.povRight().whileTrue(stateController.setState(RobotStateController.State.REVERSE_SHOOTER));
-    operator.leftTrigger().toggleOnTrue(stateController.setState(RobotStateController.State.SPIN_UP));
+    operator.leftTrigger().toggleOnTrue(stateController.setState(RobotStateController.State.SPIN_UP).alongWith(Controls.rumbleOperator()));
     operator.rightTrigger().whileTrue(stateController.setState(RobotStateController.State.SHOOT));
 
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Dashboard");

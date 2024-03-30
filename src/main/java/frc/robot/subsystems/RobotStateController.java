@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
+import frc.robot.Constants.Field;
 import frc.robot.Constants.Preferences;
 import frc.robot.subsystems.amp.Amp;
 import frc.robot.subsystems.drive.SwerveDrive;
@@ -32,6 +33,7 @@ public class RobotStateController extends SubsystemBase {
   private Debouncer beamBreakDebouncer = new Debouncer(0.1);
   private Debouncer shotDebouncer = new Debouncer(0.25);
   private State currentState;
+  private boolean shootOverride = false;
   // private static ShuffleboardTab tab = Shuffleboard.getTab("Auto");
   // private static SimpleWidget hasNote = tab.add("has Note", true).withWidget(BuiltInWidgets.kToggleButton).withSize(1, 1).withPosition(0, 0);
 
@@ -54,6 +56,7 @@ public class RobotStateController extends SubsystemBase {
     SHOOT_TRAP,
     CENTER_NOTE,
     REVERSE_SHOOTER,
+    SHOOT_OVERIDE
   }
 
   public RobotStateController(Amp amp, SwerveDrive swerveDrive, Shooter shooter, Transfer transfer, Intake intake) {
@@ -142,7 +145,15 @@ public class RobotStateController extends SubsystemBase {
             intake.setState(Intake.State.SLOW_IN)
           ).until(() -> !hasNote()),
           transfer.setState(Transfer.State.SHOOTER_SLOW)
-        ).raceWith(LEDs.setStateCommand(LEDs.State.RUNNING_COMMAND));
+        ).raceWith(
+          shooter.getWheels().turnOnFeedWheels(),
+          LEDs.setStateCommand(LEDs.State.RUNNING_COMMAND)
+        );
+      case SHOOT_OVERIDE:
+        return Commands.runEnd(
+          () -> shootOverride = true,
+          () -> shootOverride = false
+        );
       case SPIN_UP:
         return shooter.setState(Shooter.State.SPIN_UP);
       case REVERSE_SHOOTER:
@@ -186,7 +197,9 @@ public class RobotStateController extends SubsystemBase {
 
   public boolean canShoot() {
     // System.out.println(isAimed());
-    return shotDebouncer.calculate(isAimed());
+    if (shootOverride) return true;
+    return shotDebouncer.calculate(isAimed()) &&
+    ((swerveDrive.getPose().getX() < ((Field.LENGTH - Field.WING_X.get()) - Constants.SWERVE_DRIVE.BUMPER_DIAGONAL / 2.0) && Constants.IS_BLUE_TEAM.get()) || (swerveDrive.getPose().getX() > (Field.LENGTH - Field.WING_X.get() + Constants.SWERVE_DRIVE.BUMPER_DIAGONAL / 2.0) && !Constants.IS_BLUE_TEAM.get()));
   }
 
   public boolean inRange() {

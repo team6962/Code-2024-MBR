@@ -49,14 +49,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    double newTime = Timer.getFPGATimestamp();
-    loopTime = newTime - time;
-    time = newTime;
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    loopTime = Timer.getFPGATimestamp() - time;
     CommandScheduler.getInstance().run();
+    time = Timer.getFPGATimestamp();
+
 
   }
 

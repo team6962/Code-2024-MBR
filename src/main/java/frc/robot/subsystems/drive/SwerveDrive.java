@@ -397,8 +397,8 @@ public class SwerveDrive extends SubsystemBase {
       isAligning = true;
     }
     
-    Logger.log("addedAlignmentAngularVelocity", addedAlignmentAngularVelocity);
-    Logger.log("alignmentController.getSetpoint()", alignmentController.getSetpoint());
+    // Logger.log("addedAlignmentAngularVelocity", addedAlignmentAngularVelocity);
+    // Logger.log("alignmentController.getSetpoint()", alignmentController.getSetpoint());
 
     double alignmentAngularVelocity = alignmentController.calculate(getHeading().getRadians()) + addedAlignmentAngularVelocity;
     addedAlignmentAngularVelocity = 0.0;

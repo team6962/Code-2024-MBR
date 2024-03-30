@@ -15,6 +15,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.RobotState;
@@ -40,6 +42,8 @@ public class ShooterWheels extends SubsystemBase {
   private State state = State.OFF;
   private double speed = ShooterMath.calcShooterWheelVelocity(Constants.SHOOTER_WHEELS.TOP_EXIT_VELOCITY);
   private double encoderVelocity = 0.0;
+  private boolean isShooting = false;
+  private Debouncer isShootingDebouncer = new Debouncer(1.0, DebounceType.kFalling);
   
   public enum State {
     SPIN_UP,
@@ -118,7 +122,11 @@ public class ShooterWheels extends SubsystemBase {
         // System.out.println(speed);
         motorSpeed = (speed / SHOOTER_WHEELS.MAX_WHEEL_SPEED);
         shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153);
-        feedMotor.set(motorSpeed * 2.0 / 1.125);
+        if (isShootingDebouncer.calculate(isShooting)) {
+          feedMotor.set((getVelocity() / SHOOTER_WHEELS.MAX_WHEEL_SPEED) * (62.0 / 38.0) / 1.125);
+        } else {
+          feedMotor.set(0.0);
+        }
         break;
       case REVERSE:
         shooterMotor.set(-1.0);
@@ -157,6 +165,10 @@ public class ShooterWheels extends SubsystemBase {
 
   public double getTargetVelocity() {
     return speed;
+  }
+
+  public Command turnOnFeedWheels() {
+    return Commands.runEnd(() -> isShooting = true, () -> isShooting = false);
   }
 
   public Command calibrate() {
