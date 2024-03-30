@@ -161,6 +161,7 @@ public class SwerveDrive extends SubsystemBase {
     Logger.autoLog(this, "gyroVelocity", () -> Math.hypot(gyro.getVelocityX(), gyro.getVelocityY()));
     Logger.autoLog(this, "commandedAcceleration", () -> linearAcceleration.getNorm());
     Logger.autoLog(this, "commandedVelocity", () -> Math.hypot(getDrivenChassisSpeeds().vxMetersPerSecond, getDrivenChassisSpeeds().vyMetersPerSecond));
+    Logger.autoLog(this, "measuredVelocity", () -> Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond, getMeasuredChassisSpeeds().vyMetersPerSecond));
     Logger.autoLog(this, "gyroIsCalibrating", () -> gyro.isCalibrating());
     Logger.autoLog(this, "gyroIsConnected", () -> gyro.isConnected());
     Logger.autoLog(this, "gyroRawDegrees", () -> gyro.getRotation2d().getDegrees());
@@ -413,7 +414,7 @@ public class SwerveDrive extends SubsystemBase {
       SWERVE_DRIVE.PHYSICS.MAX_ANGULAR_VELOCITY
     );
     fieldRelativeSpeeds = kinematics.toChassisSpeeds(moduleStates);
-    
+
 
     // Limit translational acceleration
     Translation2d targetLinearVelocity = new Translation2d(fieldRelativeSpeeds.vxMetersPerSecond, fieldRelativeSpeeds.vyMetersPerSecond);
@@ -421,7 +422,7 @@ public class SwerveDrive extends SubsystemBase {
     linearAcceleration = (targetLinearVelocity).minus(currentLinearVelocity).div(Robot.getLoopTime());
     double linearForce = linearAcceleration.getNorm() * SWERVE_DRIVE.ROBOT_MASS;
 
-     // Limit rotational acceleration
+    // Limit rotational acceleration
     double targetAngularVelocity = fieldRelativeSpeeds.omegaRadiansPerSecond;
     double currentAngularVelocity = drivenChassisSpeeds.omegaRadiansPerSecond;
     double angularAcceleration = (targetAngularVelocity - currentAngularVelocity) / Robot.getLoopTime();
