@@ -123,7 +123,7 @@ public class ShooterWheels extends SubsystemBase {
       case SPIN_UP:
         // System.out.println(speed);
         motorSpeed = (speed / SHOOTER_WHEELS.MAX_WHEEL_SPEED);
-        shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153);
+        shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153 / 0.975257732);
         if (isShootingDebouncer.calculate(isShooting)) {
           feedMotor.set((getVelocity() / SHOOTER_WHEELS.MAX_WHEEL_SPEED) * (62.0 / 38.0) / 1.125);
         } else {
