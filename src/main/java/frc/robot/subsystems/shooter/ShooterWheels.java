@@ -31,7 +31,6 @@ import frc.robot.Constants.Constants.CAN;
 import frc.robot.Constants.Constants.ENABLED_SYSTEMS;
 import frc.robot.Constants.Constants.SHOOTER_WHEELS;
 import frc.robot.Constants.Preferences.VOLTAGE_LADDER;
-import frc.robot.util.TunableNumber;
 import frc.robot.util.hardware.SparkMaxUtil;
 import frc.robot.util.software.Logging.Logger;
 
@@ -43,7 +42,7 @@ public class ShooterWheels extends SubsystemBase {
   private double speed = ShooterMath.calcShooterWheelVelocity(Constants.SHOOTER_WHEELS.TOP_EXIT_VELOCITY);
   private double encoderVelocity = 0.0;
   private boolean isShooting = false;
-  private Debouncer isShootingDebouncer = new Debouncer(1.0, DebounceType.kFalling);
+  private Debouncer isShootingDebouncer = new Debouncer(2.0, DebounceType.kFalling);
   
   public enum State {
     SPIN_UP,
@@ -63,9 +62,9 @@ public class ShooterWheels extends SubsystemBase {
     SparkMaxUtil.configureEncoder(shooterMotor, SHOOTER_WHEELS.ENCODER_CONVERSION_FACTOR);
     SparkMaxUtil.configureEncoder(shooterMotorFollower, SHOOTER_WHEELS.ENCODER_CONVERSION_FACTOR);
     // SparkMaxUtil.configurePID(this, motor, SHOOTER_WHEELS.PROFILE.kP, SHOOTER_WHEELS.PROFILE.kI, SHOOTER_WHEELS.PROFILE.kD, SHOOTER_WHEELS.PROFILE.kV, false);
+    SparkMaxUtil.save(shooterMotor);
     SparkMaxUtil.configureCANStatusFrames(shooterMotor, true, false);
     SparkMaxUtil.configureCANStatusFrames(shooterMotorFollower, true, false);
-    SparkMaxUtil.save(shooterMotor);
 
     shooterMotorFollower.follow(shooterMotor, true);
     SparkMaxUtil.save(shooterMotorFollower);
@@ -73,10 +72,8 @@ public class ShooterWheels extends SubsystemBase {
     feedMotor = new CANSparkMax(CAN.SHOOTER_FEED, MotorType.kBrushless);
 
     SparkMaxUtil.configureAndLog(this, feedMotor, true, CANSparkMax.IdleMode.kCoast, 80, 80);
-    SparkMaxUtil.configureCANStatusFrames(feedMotor, false, false);
     SparkMaxUtil.save(feedMotor);
-
-    new TunableNumber(this, "Flywheel Velcotiy", (x) -> setTargetWheelSpeedCommand(() -> x).schedule(), 0);
+    SparkMaxUtil.configureCANStatusFrames(feedMotor, false, false);
 
     Logger.autoLog(this, "velocity", () -> getVelocity());
     Logger.autoLog(this, "targetVelocity", () -> speed);
@@ -125,7 +122,7 @@ public class ShooterWheels extends SubsystemBase {
         motorSpeed = (speed / SHOOTER_WHEELS.MAX_WHEEL_SPEED);
         shooterMotor.set(motorSpeed / 0.8888349515 / 1.0328467153 / 0.975257732);
         if (isShootingDebouncer.calculate(isShooting)) {
-          feedMotor.set((getVelocity() / SHOOTER_WHEELS.MAX_WHEEL_SPEED) * (62.0 / 38.0) / 1.125);
+          feedMotor.set(motorSpeed * (62.0 / 38.0) / 1.125);
         } else {
           feedMotor.set(0.0);
         }

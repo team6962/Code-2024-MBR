@@ -31,8 +31,8 @@ public class Intake extends SubsystemBase {
     motor = new CANSparkMax(CAN.INTAKE, MotorType.kBrushless);
 
     SparkMaxUtil.configureAndLog(this, motor, false, CANSparkMax.IdleMode.kCoast);
-    SparkMaxUtil.configureCANStatusFrames(motor, false, false);
     SparkMaxUtil.save(motor);
+    SparkMaxUtil.configureCANStatusFrames(motor, false, false);
     
     Logger.autoLog(this, "state", () -> state.name());
   }

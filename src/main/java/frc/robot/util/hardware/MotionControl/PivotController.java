@@ -78,6 +78,7 @@ public class PivotController {
     
     Logger.autoLog(subsystem, "targetPosition",                   () -> getTargetAngle().getRadians());
     Logger.autoLog(subsystem, "position",                         () -> getPosition().getRadians());
+    Logger.autoLog(subsystem, "relativePosition",                 () -> encoder.getPosition());
     Logger.autoLog(subsystem, "rawAbsolutePosition",              () -> absoluteEncoder.getAbsolutePosition() * 360);
     Logger.autoLog(subsystem, "doneMoving",                       () -> doneMoving());
 

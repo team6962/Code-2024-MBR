@@ -47,8 +47,8 @@ public class Hang extends SubsystemBase {
     rightMotor = new CANSparkMax(CAN.HANG_RIGHT, MotorType.kBrushless);
     
     SparkMaxUtil.configureAndLog(this, rightMotor, false, CANSparkMax.IdleMode.kBrake);
-    SparkMaxUtil.configureCANStatusFrames(rightMotor, false, true);
     SparkMaxUtil.save(rightMotor);   
+    SparkMaxUtil.configureCANStatusFrames(rightMotor, false, true);
 
     rightEncoder = rightMotor.getEncoder();
 

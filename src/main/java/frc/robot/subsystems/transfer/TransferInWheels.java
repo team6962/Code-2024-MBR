@@ -29,8 +29,8 @@ public class TransferInWheels extends SubsystemBase {
     motor = new CANSparkMax(CAN.TRANSFER_IN, MotorType.kBrushless); // TODO
 
     SparkMaxUtil.configureAndLog(this, motor, false, CANSparkMax.IdleMode.kBrake);
-    SparkMaxUtil.configureCANStatusFrames(motor, false, false);
     SparkMaxUtil.save(motor);
+    SparkMaxUtil.configureCANStatusFrames(motor, false, false);
 
     Logger.autoLog(this, "state", () -> state.name());
 

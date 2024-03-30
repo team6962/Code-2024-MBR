@@ -35,8 +35,7 @@ public final class Logger {
   private static Map<String, Object> values = new HashMap<String, Object>();
   private static ShuffleboardTab tab = Shuffleboard.getTab("Logging");
   private static GenericEntry loggingButton = tab.add("Enable Logging", true).withWidget(BuiltInWidgets.kToggleSwitch).withSize(1, 1).withPosition(0, 0).getEntry();
-
-
+  
   private static Notifier notifier = new Notifier(
     () -> {
       try {

@@ -20,7 +20,6 @@ import frc.robot.Constants.Constants.ENABLED_SYSTEMS;
 import frc.robot.Constants.Constants.SHOOTER_PIVOT;
 import frc.robot.Constants.Preferences;
 import frc.robot.Constants.Preferences.VOLTAGE_LADDER;
-import frc.robot.util.TunableNumber;
 import frc.robot.util.hardware.SparkMaxUtil;
 import frc.robot.util.hardware.MotionControl.PivotController;
 
@@ -33,8 +32,8 @@ public class ShooterPivot extends SubsystemBase {
     motor = new CANSparkMax(CAN.SHOOTER_PIVOT, MotorType.kBrushless);
 
     SparkMaxUtil.configureAndLog(this, motor, false, CANSparkMax.IdleMode.kBrake); // TODO CHANGE TO BRAKE
-    SparkMaxUtil.configureCANStatusFrames(motor, false, false);
-    SparkMaxUtil.save(motor);
+    // SparkMaxUtil.save(motor);
+    // SparkMaxUtil.configureCANStatusFrames(motor, false, true);
 
     controller = new PivotController(
       this,
@@ -52,7 +51,7 @@ public class ShooterPivot extends SubsystemBase {
 
     SparkMaxUtil.save(motor);
 
-    new TunableNumber(this, "Shooter Pivot Power", (x) -> controller.setTargetAngle(Rotation2d.fromDegrees(x)), 0);
+    // new TunableNumber(this, "Shooter Pivot Power", (x) -> controller.setTargetAngle(Rotation2d.fromDegrees(x)), 0);
   }
 
   @Override
@@ -64,6 +63,8 @@ public class ShooterPivot extends SubsystemBase {
     }
 
     controller.run();
+
+    // motor.set(0.33);
     
     if (motor.getAppliedOutput() > 0.0 && getPosition().getRadians() > Preferences.SHOOTER_PIVOT.MAX_ANGLE.getRadians()) {
       motor.stopMotor();

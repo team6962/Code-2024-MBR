@@ -35,7 +35,7 @@ public class Autonomous extends Command {
   private SwerveDrive swerveDrive;
   private List<Integer> queuedNotes = List.of();
   private List<Integer> remainingNotes = List.of();
-
+  
   private double noteAvoidRadius = (Field.NOTE_LENGTH / 2.0 + Constants.SWERVE_DRIVE.BUMPER_DIAGONAL / 2.0);
   private double notePickupDistance = Constants.SWERVE_DRIVE.BUMPER_LENGTH / 2.0 - Field.NOTE_LENGTH / 2.0;
   private double noteAlignDistance = Constants.SWERVE_DRIVE.BUMPER_LENGTH / 2.0 + Field.NOTE_LENGTH;
@@ -440,7 +440,7 @@ public class Autonomous extends Command {
     if (state == State.PICKUP && !hasNote() && targetedNote != null) {
       Translation2d visionNotePosition = getVisionNotePosition(targetedNote.nearest(fieldNotePositions));
       boolean firstVisionPosition = targetedNote.nearest(fieldNotePositions).getDistance(targetedNote) < 0.01;
-      if (visionNotePosition != null && (visionNotePosition.getDistance(targetedNote) > Field.NOTE_LENGTH * swerveDrive.getPose().getTranslation().getDistance(visionNotePosition))) {
+      if (visionNotePosition != null && (visionNotePosition.getDistance(targetedNote) > Field.NOTE_LENGTH / 4.0 * swerveDrive.getPose().getTranslation().getDistance(visionNotePosition) || firstVisionPosition)) {
         targetedNote = visionNotePosition;
         if (runningCommand != null) runningCommand.cancel();
         runningCommand = pickup(targetedNote);
@@ -488,6 +488,8 @@ public class Autonomous extends Command {
   }
 
   public boolean inRange(Translation2d point) {
-    return point.getDistance(Field.SPEAKER.get().toTranslation2d()) < speakerShotDistance && ((point.getX() < Field.WING_X.get() - 0.5 && Constants.IS_BLUE_TEAM.get()) || (point.getX() > Field.WING_X.get() + 0.5 && !Constants.IS_BLUE_TEAM.get()));
+    return 
+      point.getDistance(Field.SPEAKER.get().toTranslation2d()) < (point.getY() < Field.WIDTH / 2.0 ? 3.5 : speakerShotDistance) && 
+      ((point.getX() < Field.WING_X.get() - 0.5 && Constants.IS_BLUE_TEAM.get()) || (point.getX() > Field.WING_X.get() + 0.5 && !Constants.IS_BLUE_TEAM.get()));
   }
 }
