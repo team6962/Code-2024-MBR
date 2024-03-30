@@ -98,6 +98,7 @@ public class SwerveDrive extends SubsystemBase {
   private SWERVE_DRIVE.MODULE_CONFIG[] equippedModules;
 
   private SwerveDriveWheelPositions previousWheelPositions;
+  private Translation2d linearAcceleration;
 
   public SwerveDrive() {
     // Create the serve module objects
@@ -157,6 +158,9 @@ public class SwerveDrive extends SubsystemBase {
     Logger.autoLog(this, "measuredStates", () -> getMeasuredModuleStates());
     Logger.autoLog(this, "modulePositions", () -> getModulePositions());
     Logger.autoLog(this, "gyroAcceleration", () -> Math.hypot(gyro.getWorldLinearAccelX(), gyro.getWorldLinearAccelY()));
+    Logger.autoLog(this, "gyroVelocity", () -> Math.hypot(gyro.getVelocityX(), gyro.getVelocityY()));
+    Logger.autoLog(this, "commandedAcceleration", () -> linearAcceleration.getNorm());
+    Logger.autoLog(this, "commandedVelocity", () -> Math.hypot(getDrivenChassisSpeeds().vxMetersPerSecond, getDrivenChassisSpeeds().vyMetersPerSecond));
     Logger.autoLog(this, "gyroIsCalibrating", () -> gyro.isCalibrating());
     Logger.autoLog(this, "gyroIsConnected", () -> gyro.isConnected());
     Logger.autoLog(this, "gyroRawDegrees", () -> gyro.getRotation2d().getDegrees());
@@ -399,8 +403,8 @@ public class SwerveDrive extends SubsystemBase {
     double alignmentAngularVelocity = alignmentController.calculate(getHeading().getRadians()) + addedAlignmentAngularVelocity;
     addedAlignmentAngularVelocity = 0.0;
     if (isAligning && !alignmentController.atSetpoint() && !parked) fieldRelativeSpeeds.omegaRadiansPerSecond += alignmentAngularVelocity;
-    
-    SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getAllianceAwareHeading()));
+
+    SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(fieldRelativeSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(
       moduleStates,
       fieldRelativeSpeeds,
@@ -408,12 +412,13 @@ public class SwerveDrive extends SubsystemBase {
       SWERVE_DRIVE.PHYSICS.MAX_LINEAR_VELOCITY,
       SWERVE_DRIVE.PHYSICS.MAX_ANGULAR_VELOCITY
     );
-    fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(kinematics.toChassisSpeeds(moduleStates), getAllianceAwareHeading());
+    fieldRelativeSpeeds = kinematics.toChassisSpeeds(moduleStates);
+    
 
     // Limit translational acceleration
     Translation2d targetLinearVelocity = new Translation2d(fieldRelativeSpeeds.vxMetersPerSecond, fieldRelativeSpeeds.vyMetersPerSecond);
     Translation2d currentLinearVelocity = new Translation2d(drivenChassisSpeeds.vxMetersPerSecond, drivenChassisSpeeds.vyMetersPerSecond);
-    Translation2d linearAcceleration = (targetLinearVelocity).minus(currentLinearVelocity).div(Robot.getLoopTime());
+    linearAcceleration = (targetLinearVelocity).minus(currentLinearVelocity).div(Robot.getLoopTime());
     double linearForce = linearAcceleration.getNorm() * SWERVE_DRIVE.ROBOT_MASS;
 
      // Limit rotational acceleration
