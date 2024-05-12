@@ -76,6 +76,8 @@ public class SwerveModuleSim extends SwerveModule {
     if (SWERVE_DRIVE.DO_ANGLE_ERROR_SPEED_REDUCTION) {
       speedMetersPerSecond *= Math.cos(SwerveMath.angleDistance(getMeasuredState().angle.getRadians(), getMeasuredState().angle.getRadians()));
     }
+
+    
     
     for (int i = 0; i < 20; i++) {
       double driveVolts = driveFF.calculate(speedMetersPerSecond, 0.0) + 12.0 * drivePID.calculate(getMeasuredState().speedMetersPerSecond, speedMetersPerSecond);
@@ -105,13 +107,6 @@ public class SwerveModuleSim extends SwerveModule {
   }
   
   @Override
-  public double getTotalCurrent() {
-    return 
-      driveMotor.getCurrentDrawAmps() + 
-      steerMotor.getCurrentDrawAmps();
-  }
-  
-  @Override
   public void stop() {
     super.setTargetState(new SwerveModuleState(0.0, getMeasuredState().angle));
     steerMotor.setInputVoltage(0.0);
@@ -126,13 +121,5 @@ public class SwerveModuleSim extends SwerveModule {
   @Override
   public SwerveModulePosition getModulePosition() {
     return new SwerveModulePosition(drivePosition, getMeasuredState().angle);
-  }
-
-  public static double wheelMOI(double radius, double mass) {
-    return (1.0 / 2.0) * mass * Math.pow(radius, 2.0);
-  }
-
-  public static double steerWheelMOI(double radius, double mass, double width) {
-    return (1.0 / 4.0) * mass * Math.pow(radius, 2.0) + (1.0 / 12.0) * mass * Math.pow(width, 2.0);
   }
 }

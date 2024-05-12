@@ -60,7 +60,7 @@ public class RobotContainer {
   public RobotContainer() {
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog(), true);
-    // Logger.autoLog("PDH", PDH);
+    Logger.autoLog("PDH", PDH);
 
     Logger.startLog();
     AutonChooser.init();
@@ -101,7 +101,6 @@ public class RobotContainer {
     // Configure the trigger bindings
     Controls.configureBindings(stateController, swerveDrive, transfer, transfer.getInWheels(), transfer.getOutWheels(), shooter, shooter.getWheels(), shooter.getPivot(), amp, amp.getPivot(), amp.getWheels(), hang);
 
-    SwerveDrive.printChoreoConfig();
     AprilTags.printConfig(Constants.LIMELIGHT.APRILTAG_CAMERA_POSES);
 
     Pathfinding.ensureInitialized();

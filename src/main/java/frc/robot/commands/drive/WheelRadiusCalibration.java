@@ -20,7 +20,7 @@ public class WheelRadiusCalibration extends Command {
   }
 
   public void initialize() {
-    startingPositions = swerveDrive.getModulePositions();
+    startingPositions = swerveDrive.getModulePositions().positions;
     lastGyroHeading = swerveDrive.getHeading();
     gyroRadians = 0.0;
     timer = 0.0;
@@ -37,7 +37,7 @@ public class WheelRadiusCalibration extends Command {
     gyroRadians += Math.abs(swerveDrive.getHeading().minus(lastGyroHeading).getRadians());
     lastGyroHeading = swerveDrive.getHeading();
 
-    SwerveModulePosition[] modulePositions = swerveDrive.getModulePositions();
+    SwerveModulePosition[] modulePositions = swerveDrive.getModulePositions().positions;
     double averageRadiansDriven = 0;
     for (int i = 0; i < startingPositions.length; i++) {
       SwerveModulePosition startingPosition = startingPositions[i];

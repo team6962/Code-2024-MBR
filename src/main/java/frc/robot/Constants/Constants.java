@@ -140,7 +140,7 @@ public final class Constants {
       public static final int    SLIPLESS_CURRENT_LIMIT             = (int) ((SLIPLESS_ACCELERATION * NEO.STATS.stallCurrentAmps * ROBOT_MASS * WHEEL_RADIUS) / (4.0 * DRIVE_MOTOR_GEARING * NEO.STATS.stallTorqueNewtonMeters));
       
       public static final double MAX_MOTOR_SPEED                    = Units.radiansPerSecondToRotationsPerMinute(NEO.STATS.freeSpeedRadPerSec) * GEARBOX_EFFICIENCY;
-      public static final double MAX_MOTOR_TORQUE                   = NEO.maxTorqueCurrentLimited(SLIPLESS_CURRENT_LIMIT);
+      public static final double MAX_MOTOR_TORQUE                   = NEO.calcTorque(SLIPLESS_CURRENT_LIMIT, 0.0);
       
       public static final double MAX_WHEEL_VELOCITY                 = (MAX_MOTOR_SPEED * (Math.PI * 2.0)) / 60.0 / DRIVE_MOTOR_GEARING;
       
@@ -284,8 +284,8 @@ public final class Constants {
     public static final int SAFE_FREE_CURRENT = 60;
     public static final double SAFE_RAMP_RATE = 0.1;
 
-    public static double maxTorqueCurrentLimited(int currentLimit) {
-      return STATS.stallTorqueNewtonMeters / STATS.stallCurrentAmps * currentLimit;
+    public static double calcTorque(int currentLimit, double speed) {
+      return (STATS.stallTorqueNewtonMeters / STATS.stallCurrentAmps * currentLimit) * (1.0 - speed / STATS.freeSpeedRadPerSec);
     }
   }
   public static final class NEO550 {
